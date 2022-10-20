@@ -30,12 +30,8 @@ const colorToCSS = (color) => {
     return `rgba(${[...Object.values(color).map(n => n * 255), 1].join(", ")})`;
 }
 
-const runNewColor = (net) => {
-    const color = {
-        r: Math.random(),
-        g: Math.random(),
-        b: Math.random()
-    }
+const runNext = (net) => {
+    color = newColor();
 
     const guess = net.run(color)[0];
     console.log(guess);
@@ -44,12 +40,40 @@ const runNewColor = (net) => {
     colorEl.style.backgroundColor = colorToCSS(color);
 }
 
-/* == MAIN == */
-const init = () => {
-    const net = new brain.NeuralNetwork();
-    net.train(trainingData);
-    
-    runNewColor(net);
-}
+const trainColor = (value) => {
+    trainingData.push({
+        input: color,
+        output: [value]
+    });
 
-init();
+    net.train(trainingData);
+
+    runNext(net);
+};
+
+const newColor = () => {
+    return {
+        r: Math.random(),
+        g: Math.random(),
+        b: Math.random()
+    };
+};
+
+const print = () => {
+    console.log(JSON.stringify(trainingData));
+};
+
+/* == LISTENERS == */
+whiteButton.addEventListener('click', () => trainColor(1)); // White
+blackButton.addEventListener('click', () => trainColor(0)); // White
+printButton.addEventListener('click', print);
+
+/* == MAIN == */
+// Setup
+let color = {};
+const net = new brain.NeuralNetwork();
+net.train(trainingData);
+
+// Main
+runNext(net);
+
