@@ -1,0 +1,15 @@
+
+#color {
+    background-color: skyblue;
+    width: 200px;
+    height: 200px;
+    outline: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.white {
+    color: white;
+}
